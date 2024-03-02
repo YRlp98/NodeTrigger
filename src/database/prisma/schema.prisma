@@ -22,8 +22,8 @@ model hobbies {
 
 model info {
   id              Int           @id @default(autoincrement())
-  name            String        @db.VarChar(255)
-  family          String        @db.VarChar(255)
+  first_name      String        @db.VarChar(255)
+  last_name       String        @db.VarChar(255)
   sex             String?       @db.VarChar(10)
   age             Int?
   pic             String?       @db.VarChar(512)
@@ -57,4 +57,12 @@ model skills {
   start_at DateTime? @db.Date
   level    Int?
   info     info[]
+}
+
+model logs {
+  id            Int      @id @default(autoincrement())
+  table_name    String?  @db.VarChar(255)
+  action_type   String?  @db.VarChar(20)
+  record_id     Int?
+  log_timestamp DateTime @default(now()) @db.Timestamp(0)
 }
