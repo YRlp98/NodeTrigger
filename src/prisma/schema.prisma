@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model contact_info {
+  id    Int     @id @default(autoincrement())
+  phone String? @db.VarChar(20)
+  email String? @db.VarChar(255)
+  info  info[]
+}
+
+model hobbies {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+  info info[]
+}
+
+model info {
+  id              Int           @id @default(autoincrement())
+  name            String        @db.VarChar(255)
+  family          String        @db.VarChar(255)
+  sex             String?       @db.VarChar(10)
+  age             Int?
+  pic             String?       @db.VarChar(512)
+  bio             String?       @db.Text
+  contact_info_id Int?
+  skills_id       Int?
+  links_id        Int?
+  hobbies_id      Int?
+  contact_info    contact_info? @relation(fields: [contact_info_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_1")
+  skills          skills?       @relation(fields: [skills_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_2")
+  links           links?        @relation(fields: [links_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_3")
+  hobbies         hobbies?      @relation(fields: [hobbies_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_4")
+
+  @@index([contact_info_id], map: "contact_info_id")
+  @@index([hobbies_id], map: "hobbies_id")
+  @@index([links_id], map: "links_id")
+  @@index([skills_id], map: "skills_id")
+}
+
+model links {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(255)
+  url   String? @db.VarChar(255)
+  about String? @db.Text
+  info  info[]
+}
+
+model skills {
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
+  start_at DateTime? @db.Date
+  level    Int?
+  info     info[]
+}
