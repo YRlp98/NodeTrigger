@@ -1,6 +1,5 @@
 
 import { PrismaClient } from "@prisma/client";
-import { promises } from "dns";
 
 export default class queries {
     private prisma: PrismaClient;

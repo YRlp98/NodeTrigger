@@ -12,15 +12,6 @@ class App {
         this.insertData = new queries();
     };
 
-    private async connectToDatabase() {
-        try {
-            await this.databaseService.connect();
-            console.log('Connected to the database.');
-        } catch (error) {
-            console.error('Error connecting to the database:', error);
-        }
-    };
-
     private async logUserInfo() {
         try {
             await this.userInfoQueries.logLastInfoTableRow();
@@ -44,7 +35,6 @@ class App {
     async run() {
         console.log('Running app...');
 
-        await this.connectToDatabase();
         await this.logUserInfo();
         // await this.insertNewData();
     };
