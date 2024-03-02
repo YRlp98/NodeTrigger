@@ -28,8 +28,8 @@ export default class queries {
     async insertData(): Promise<void> {
         try {
             const newInfoData = {
-                name: 'Yousef',
-                family: 'Roshandel',
+                first_name: 'Yousef',
+                last_name: 'Roshandel',
                 sex: 'Male',
                 age: 25,
                 pic: 'https://lixbjgupmbwyplqhzkde.supabase.in/storage/v1/object/sign/yrlp-storage/Images/Yousef_Roshandel.webp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ5cmxwLXN0b3JhZ2UvSW1hZ2VzL1lvdXNlZl9Sb3NoYW5kZWwud2VicCIsImlhdCI6MTYzODE5OTg4NSwiZXhwIjoxOTUzNTU5ODg1fQ.VKVFopNxk-Ewlr32JwQdmybEs9oPvsxP5OXNZrxjBNs',
