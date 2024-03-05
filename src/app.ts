@@ -1,20 +1,18 @@
 import DatabaseService from "./services/databaseService";
-import queries from "./database/queries";
+import Queries from "./database/queries";
 
 class App {
     private databaseService: DatabaseService;
-    private userInfoQueries: queries;
-    private insertData: queries;
+    private queries: Queries;
 
     constructor() {
         this.databaseService = new DatabaseService();
-        this.userInfoQueries = new queries();
-        this.insertData = new queries();
+        this.queries = new Queries();
     };
 
     private async logUserInfo() {
         try {
-            await this.userInfoQueries.logLastInfoTableRow();
+            await this.queries.logLastInfoTableRow();
         } catch (error) {
             console.error('Error logging user info:', error);
         } finally {
@@ -22,9 +20,30 @@ class App {
         }
     };
 
+
+    private async logLastLogTableRow() {
+        try {
+            await this.queries.logLastLogTableRow();
+        } catch (error) {
+            console.error('Error logging last log table row:', error);
+        } finally {
+            await this.databaseService.disconnect();
+        }
+    }
+
+    private async logNewLogs() {
+        try {
+            await this.queries.logNewLogs();
+        } catch (error) {
+            console.error('Error logging new logs:', error);
+        } finally {
+            await this.databaseService.disconnect();
+        }
+    }
+
     private async insertNewData() {
         try {
-            await this.userInfoQueries.insertData();
+            await this.queries.insertData();
         } catch (error) {
             console.error('Error inserting new data:', error);
         } finally {
@@ -35,7 +54,12 @@ class App {
     async run() {
         console.log('Running app...');
 
-        await this.logUserInfo();
+        // await this.logUserInfo();
+
+        setInterval(async () => {
+            await this.logLastLogTableRow();
+        }, 30000);
+
         // await this.insertNewData();
     };
 }

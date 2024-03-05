@@ -1,11 +1,13 @@
 
 import { PrismaClient } from "@prisma/client";
 
-export default class queries {
+export default class Queries {
     private prisma: PrismaClient;
+    private lastLogId: number | null
 
     constructor() {
         this.prisma = new PrismaClient();
+        this.lastLogId = null;
     };
 
     // Log the last row of the info table
@@ -21,6 +23,56 @@ export default class queries {
             console.log(error);
         } finally {
             await this.prisma.$disconnect();
+        }
+    };
+
+    // Log the last row of the logs table
+    async logLastLogTableRow(): Promise<void> {
+        try {
+            const lastLogRow = await this.prisma.logs.findFirst({
+                orderBy: {
+                    id: 'desc',
+                }
+            });
+
+            if (lastLogRow) {
+                console.log('Last log table row:', lastLogRow);
+                this.lastLogId = lastLogRow.id;
+            } else {
+                console.log('Log table is empty');
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            await this.prisma.$disconnect();
+        }
+    };
+
+    // Log the logs table, only new entries since the last check
+    async logNewLogs(): Promise<void> {
+        try {
+            let logsTableData = [];
+
+            if (this.lastLogId !== null) {
+                logsTableData = await this.prisma.logs.findMany({
+                    where: {
+                        id: {
+                            gt: this.lastLogId,
+                        },
+                    },
+                });
+            } else {
+                // If lastLogId is null, log all entries
+                logsTableData = await this.prisma.logs.findMany();
+            }
+
+            if (logsTableData.length > 0) {
+                console.log('New logs:', logsTableData);
+            } else {
+                console.log('No new logs');
+            }
+        } catch (error) {
+            console.log('Error checking logs table', error);
         }
     };
 
