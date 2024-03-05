@@ -67,7 +67,12 @@ export default class Queries {
             }
 
             if (logsTableData.length > 0) {
-                console.log('New logs:', logsTableData);
+                for (const log of logsTableData) {
+                    console.log('New log:', log);
+
+                    // Update lastLogId to the latest log ID
+                    this.lastLogId = log.id;
+                }
             } else {
                 console.log('No new logs');
             }

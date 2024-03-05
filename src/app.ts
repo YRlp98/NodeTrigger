@@ -57,7 +57,7 @@ class App {
         // await this.logUserInfo();
 
         setInterval(async () => {
-            await this.logLastLogTableRow();
+            await this.logNewLogs();
         }, 30000);
 
         // await this.insertNewData();
