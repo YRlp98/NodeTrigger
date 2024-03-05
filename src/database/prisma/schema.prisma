@@ -22,8 +22,6 @@ model hobbies {
 
 model info {
   id              Int           @id @default(autoincrement())
-  first_name      String        @db.VarChar(255)
-  last_name       String        @db.VarChar(255)
   sex             String?       @db.VarChar(10)
   age             Int?
   pic             String?       @db.VarChar(512)
@@ -32,6 +30,8 @@ model info {
   skills_id       Int?
   links_id        Int?
   hobbies_id      Int?
+  first_name      String        @db.VarChar(255)
+  last_name       String        @db.VarChar(255)
   contact_info    contact_info? @relation(fields: [contact_info_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_1")
   skills          skills?       @relation(fields: [skills_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_2")
   links           links?        @relation(fields: [links_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "info_ibfk_3")
@@ -65,4 +65,5 @@ model logs {
   action_type   String?  @db.VarChar(20)
   record_id     Int?
   log_timestamp DateTime @default(now()) @db.Timestamp(0)
+  last_updated  DateTime @default(now()) @db.Timestamp(0)
 }
