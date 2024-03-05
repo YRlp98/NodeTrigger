@@ -8,28 +8,8 @@ class App {
     constructor() {
         this.databaseService = new DatabaseService();
         this.queries = new Queries();
+        Queries.subscribeToNewLog(this.logNewLogs.bind(this));
     };
-
-    private async logUserInfo() {
-        try {
-            await this.queries.logLastInfoTableRow();
-        } catch (error) {
-            console.error('Error logging user info:', error);
-        } finally {
-            await this.databaseService.disconnect();
-        }
-    };
-
-
-    private async logLastLogTableRow() {
-        try {
-            await this.queries.logLastLogTableRow();
-        } catch (error) {
-            console.error('Error logging last log table row:', error);
-        } finally {
-            await this.databaseService.disconnect();
-        }
-    }
 
     private async logNewLogs() {
         try {
@@ -39,28 +19,13 @@ class App {
         } finally {
             await this.databaseService.disconnect();
         }
-    }
-
-    private async insertNewData() {
-        try {
-            await this.queries.insertData();
-        } catch (error) {
-            console.error('Error inserting new data:', error);
-        } finally {
-            await this.databaseService.disconnect();
-        }
     };
 
     async run() {
         console.log('Running app...');
 
-        // await this.logUserInfo();
-
-        setInterval(async () => {
-            await this.logNewLogs();
-        }, 30000);
-
-        // await this.insertNewData();
+        // Subscribe to the 'newLog' event
+        Queries.subscribeToNewLog(this.logNewLogs.bind(this));
     };
 }
 
